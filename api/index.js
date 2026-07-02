@@ -195,10 +195,16 @@ server.post('/api/auth/register', (req, res) => {
     return res.status(409).json({ message: '邮箱已被注册' })
   }
   const maxId = db.users.reduce((max, u) => Math.max(max, u.id), 0)
+  const defaultNickname = username
   const newUser = {
     id: maxId + 1,
     username,
     email: email || '',
+    nickname: defaultNickname,
+    avatar: '',
+    phone: '',
+    gender: 'other',
+    birthday: '',
     password: hashPassword(password),
     role: 'user',
     status: 'active',
