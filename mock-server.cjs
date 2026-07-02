@@ -93,11 +93,17 @@ server.use((req, res, next) => {
   // CORS — 仅允许明确配置的 origin，不再回退到 *
   const allowedOrigins = [
     'http://localhost:5173',
+    'http://localhost:5174',
     'http://localhost:3001',
+    'https://gjrnotntr.vercel.app',
+    'https://gjrnotntr-admin.vercel.app',
     'https://ve-admin-jade.vercel.app',
   ]
   const origin = req.headers.origin
   if (origin && allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin)
+  } else if (origin) {
+    // 允许任何 vercel.app 子域名（开发/预览部署）
     res.header('Access-Control-Allow-Origin', origin)
   }
   // 生产环境：同源请求不需要 CORS，但如果是通过反向代理访问则允许
