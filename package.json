@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently -n mock,vite \"node mock-server.cjs\" \"vite\"",
     "mock": "node mock-server.cjs",
     "start": "node mock-server.cjs",
     "build": "vite build",

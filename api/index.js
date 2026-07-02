@@ -250,6 +250,29 @@ server.put('/api/auth/profile', (req, res) => {
   res.json({ user: safeUser })
 })
 
+// 修改密码
+server.put('/api/auth/password', (req, res) => {
+  const user = requireAuth(req, res)
+  if (!user) return
+  const { oldPassword, newPassword } = req.body
+  if (!oldPassword || !newPassword) {
+    return res.status(400).json({ message: '旧密码和新密码不能为空' })
+  }
+  if (!verifyPassword(oldPassword, user.password)) {
+    return res.status(400).json({ message: '旧密码不正确' })
+  }
+  if (newPassword.length < 6) {
+    return res.status(400).json({ message: '新密码至少6位' })
+  }
+  if (!/[a-z]/.test(newPassword) || !/[A-Z]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
+    return res.status(400).json({ message: '新密码必须包含大小写字母和数字' })
+  }
+  const idx = db.users.findIndex((u) => u.id === user.id)
+  db.users[idx].password = hashPassword(newPassword)
+  saveDb(db)
+  res.json({ ok: true, message: '密码修改成功' })
+})
+
 // ═══════════════════ 仪表盘 ═══════════════════
 
 server.get('/api/dashboard/stats', (_req, res) => {
@@ -291,6 +314,7 @@ server.get('/api/dashboard/revenue', (_req, res) => {
 
 // ═══════════════════ CRUD 资源 ═══════════════════
 
+// 注意：orders 的 PUT 单独定义在后面（带权限校验，覆盖通用路由）
 const resources = ['users', 'products', 'categories', 'orders']
 resources.forEach((resource) => {
   server.get(`/api/${resource}`, (req, res) => {
@@ -300,6 +324,26 @@ resources.forEach((resource) => {
     const item = (db[resource] || []).find((i) => i.id === Number(req.params.id))
     item ? res.json(item) : res.status(404).json({ message: '未找到' })
   })
+})
+
+// 订单更新（带用户归属校验，覆盖通用 CRUD 的 PUT）
+server.put('/api/orders/:id', (req, res) => {
+  const user = requireAuth(req, res)
+  if (!user) return
+  const order = db.orders.find((o) => o.id === Number(req.params.id))
+  if (!order) return res.status(404).json({ message: '订单不存在' })
+  // 普通用户只能操作自己的订单，管理员可操作所有
+  if (user.role !== 'admin' && order.userId !== user.id) {
+    return res.status(403).json({ message: '无权操作此订单' })
+  }
+  const idx = db.orders.findIndex((o) => o.id === Number(req.params.id))
+  // 不允许已取消/已完成的订单再次修改状态
+  if (req.body.status === 'cancelled' && order.status !== 'pending') {
+    return res.status(400).json({ message: '只能取消待处理状态的订单' })
+  }
+  Object.assign(db.orders[idx], req.body)
+  saveDb(db)
+  res.json(db.orders[idx])
 })
 
 // ═══════════════════ 购物车 ═══════════════════
@@ -668,5 +712,47 @@ server.post('/api/audit-logs', (req, res) => {
   saveDb(db)
   res.json({ ok: true })
 })
+
+// ═══════════════════ 文件上传 ═══════════════════
+
+// 上传目录：Vercel 使用 /tmp/uploads，本地使用项目 uploads 目录
+const UPLOAD_DIR = isVercel
+  ? path.join('/tmp', 'uploads')
+  : path.join(__dirname, '..', 'public', 'uploads')
+
+// 确保上传目录存在
+if (!fs.existsSync(UPLOAD_DIR)) {
+  fs.mkdirSync(UPLOAD_DIR, { recursive: true })
+}
+
+// 解析 JSON body 中的 base64 图片上传
+server.post('/api/upload', (req, res) => {
+  const user = requireAuth(req, res)
+  if (!user) return
+  const { file, filename } = req.body || {}
+  if (!file) return res.status(400).json({ message: '缺少文件数据' })
+
+  // 支持 base64 data URL 格式
+  const matches = file.match(/^data:([^;]+);base64,(.+)$/)
+  if (!matches) return res.status(400).json({ message: '文件格式不支持，需要 base64 data URL' })
+
+  const mimeType = matches[1]
+  const ext = mimeType.split('/')[1] || 'png'
+  const name = filename || `avatar_${user.id}_${Date.now()}.${ext}`
+  const filePath = path.join(UPLOAD_DIR, name)
+
+  try {
+    const buffer = Buffer.from(matches[2], 'base64')
+    fs.writeFileSync(filePath, buffer)
+    const url = `/uploads/${name}`
+    res.json({ url, filename: name })
+  } catch (e) {
+    console.error('upload failed:', e.message)
+    res.status(500).json({ message: '文件上传失败' })
+  }
+})
+
+// 静态文件服务：提供上传文件的访问
+server.use('/uploads', express.static(UPLOAD_DIR))
 
 export default server
