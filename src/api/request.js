@@ -184,17 +184,11 @@ function _redirectToLogin() {
   } catch { /* ignore */ }
 
   try {
-    import('../router').then(({ default: router }) => {
-      const currentPath = window.location.pathname
-      if (currentPath.startsWith('/admin')) {
-        router.push('/admin/login')
-      } else {
-        router.push('/login')
-      }
+    import('../router/admin-router').then(({ default: router }) => {
+      router.push('/admin/login')
     })
   } catch {
-    const isAdmin = window.location.pathname.startsWith('/admin')
-    window.location.href = isAdmin ? '/admin/login' : '/login'
+    window.location.href = '/admin/login'
   }
 }
 
