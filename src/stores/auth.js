@@ -41,17 +41,19 @@ function safeRemove(key) {
 }
 
 export const useAuthStore = defineStore('auth', {
+  // 将 token 有效性缓存到 state 中，确保 getter 是响应式的
   state: () => ({
     user: safeGet('user'),
     adminUser: safeGet('admin_user'),
     /** @type {'user' | 'admin' | null} */
     activeRole: safeGet('active_role') || null,
+    _tokenValid: hasValidToken(),
   }),
 
   getters: {
-    isLoggedIn: (state) => hasValidToken() && state.activeRole !== null,
-    isAdmin: (state) => hasValidToken() && state.activeRole === 'admin',
-    isRegularUser: (state) => hasValidToken() && state.activeRole === 'user',
+    isLoggedIn: (state) => state._tokenValid && state.activeRole !== null,
+    isAdmin: (state) => state._tokenValid && state.activeRole === 'admin',
+    isRegularUser: (state) => state._tokenValid && state.activeRole === 'user',
     effectiveUser: (state) => state.adminUser || state.user,
     currentUser: (state) => (state.activeRole === 'admin' ? state.adminUser : state.user),
   },
@@ -62,6 +64,7 @@ export const useAuthStore = defineStore('auth', {
       const res = await loginApi(credentials)
       setTokens(res.token, res.refreshToken, res.expiresIn)
       this.activeRole = 'user'
+      this._tokenValid = true
       safeSet('active_role', 'user')
       this.user = res.user || null
       safeSet('user', this.user)
@@ -72,6 +75,7 @@ export const useAuthStore = defineStore('auth', {
       const res = await adminLoginApi(credentials)
       setTokens(res.token, res.refreshToken, res.expiresIn)
       this.activeRole = 'admin'
+      this._tokenValid = true
       safeSet('active_role', 'admin')
       this.adminUser = res.user || null
       safeSet('admin_user', this.adminUser)
@@ -82,6 +86,7 @@ export const useAuthStore = defineStore('auth', {
       const role = safeGet('active_role')
       if (role && hasValidToken()) {
         this.activeRole = role
+        this._tokenValid = true
         this.user = safeGet('user')
         this.adminUser = safeGet('admin_user')
       } else {
@@ -141,6 +146,7 @@ export const useAuthStore = defineStore('auth', {
       this.user = null
       this.adminUser = null
       this.activeRole = null
+      this._tokenValid = false
       safeRemove('user')
       safeRemove('admin_user')
       safeRemove('active_role')
