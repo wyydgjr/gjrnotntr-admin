@@ -3,6 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import crypto from 'crypto'
 import { fileURLToPath } from 'url'
+import jsonbin from './jsonbin.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const server = express()
@@ -22,49 +23,50 @@ function verifyPassword(password, storedHash) {
 // ── Vercel 环境判断 ──
 const isVercel = !!process.env.VERCEL
 
-// ── 数据持久化 ──
-// Vercel Serverless: 使用 /tmp 目录（可写但实例间不共享）
-// 本地开发: 使用项目根目录的 db.json
-const DB_PATH = isVercel
-  ? path.join('/tmp', 'db.json')
-  : path.join(__dirname, '..', 'db.json')
-
+// ── 数据持久化（JSONBin.io 云端存储 + 本地兜底） ──
 const SEED_PATH = path.join(__dirname, '..', 'db.json')
 
 function emptyDb() {
   return { users: [], products: [], categories: [], orders: [], carts: [], addresses: [], wishlist: [], reviews: [], coupons: [], user_coupons: [], after_sales: [], invoices: [], chat_messages: [], spec_templates: [], purchase_orders: [], suppliers: [], audit_logs: [] }
 }
 
-function loadDb() {
+function loadDbLocal() {
   try {
-    // Vercel 上优先从 /tmp 读取（热启动保留数据）
-    if (fs.existsSync(DB_PATH)) {
-      return JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'))
-    }
-    // 冷启动：从种子文件复制到 /tmp
-    if (isVercel && fs.existsSync(SEED_PATH)) {
-      const seed = JSON.parse(fs.readFileSync(SEED_PATH, 'utf-8'))
-      fs.writeFileSync(DB_PATH, JSON.stringify(seed, null, 2), 'utf-8')
-      return seed
-    }
-    // 本地开发：直接读 db.json
     return JSON.parse(fs.readFileSync(SEED_PATH, 'utf-8'))
   } catch (_) {
     return emptyDb()
   }
 }
 
+async function loadDb() {
+  // 1. 优先从 JSONBin 云端拉取
+  if (jsonbin.enabled()) {
+    const remote = await jsonbin.read()
+    if (remote && remote.users && remote.products) {
+      return remote
+    }
+  }
+  // 2. 本地兜底
+  return loadDbLocal()
+}
+
 function saveDb(db) {
-  try {
-    fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2), 'utf-8')
-  } catch (e) {
-    console.error('saveDb failed:', e.message)
+  jsonbin.write(db).catch(e => console.error('jsonbin write failed:', e.message))
+  if (!isVercel) {
+    try { fs.writeFileSync(SEED_PATH, JSON.stringify(db, null, 2), 'utf-8') } catch {}
   }
 }
 
-let db = loadDb()
+let db = null
+const dbReady = loadDb().then(d => { db = d })
 
 server.use(express.json())
+
+// ── 等待数据库加载完成 ──
+server.use(async (_req, _res, next) => {
+  await dbReady
+  next()
+})
 
 // ── CORS + 安全响应头（企业级） ──
 server.use((req, res, next) => {

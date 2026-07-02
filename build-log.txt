@@ -1,12 +1,9 @@
-
-> ve-admin@1.0.0 build
-> vite build
-
 [36mvite v8.1.3 [32mbuilding client environment for production...[36m[39m
-[2Ktransforming...✓ 800 modules transformed.
+[2Ktransforming...✓ 801 modules transformed.
 rendering chunks...
 computing gzip size...
 dist/index.html                               1.44 kB │ gzip:   0.65 kB
+dist/assets/UserList-DZTkSrtu.css             0.14 kB │ gzip:   0.14 kB
 dist/assets/DataTable-DeMKyx-7.css            0.25 kB │ gzip:   0.15 kB
 dist/assets/RoleList-98i5M4bl.css             0.36 kB │ gzip:   0.21 kB
 dist/assets/AuditLog-DBn5s1kY.css             0.52 kB │ gzip:   0.27 kB
@@ -22,61 +19,61 @@ dist/assets/BackupRestore-D8FUZs5R.css        1.13 kB │ gzip:   0.48 kB
 dist/assets/Modal-BnYIfkaz.css                1.25 kB │ gzip:   0.50 kB
 dist/assets/Profile-CPl3Ul2w.css              1.25 kB │ gzip:   0.55 kB
 dist/assets/Toast-DGEiqeEb.css                1.36 kB │ gzip:   0.54 kB
-dist/assets/AdminLogin-2Hw5CP8p.css           1.36 kB │ gzip:   0.51 kB
+dist/assets/AdminLogin-D9WDyPgn.css           1.36 kB │ gzip:   0.51 kB
 dist/assets/ProductList-I8R2nrGd.css          1.74 kB │ gzip:   0.60 kB
-dist/assets/Dashboard-BGhI8cMn.css            1.94 kB │ gzip:   0.67 kB
 dist/assets/ImageUploader-D7UJrDmm.css        2.11 kB │ gzip:   0.77 kB
-dist/assets/MainLayout-u7XA8mIM.css           2.99 kB │ gzip:   0.84 kB
+dist/assets/MainLayout-C3-2wQ3M.css           2.99 kB │ gzip:   0.84 kB
+dist/assets/Dashboard-Y4ehRqfh.css            3.22 kB │ gzip:   0.96 kB
 dist/assets/main-gAXEG_rq.css                 5.50 kB │ gzip:   1.77 kB
-dist/assets/dashboard-BIGRb7-J.js             0.21 kB │ gzip:   0.15 kB
+dist/assets/dashboard-DGBuH5kO.js             0.21 kB │ gzip:   0.14 kB
 dist/assets/toast-DbohJAJN.js                 0.30 kB │ gzip:   0.24 kB
-dist/assets/NotFound-DbDFQyjl.js              0.74 kB │ gzip:   0.50 kB
-dist/assets/Toast-n9bAP0ZF.js                 0.80 kB │ gzip:   0.53 kB
-dist/assets/resource-CbWbZj37.js              0.85 kB │ gzip:   0.47 kB
-dist/assets/AuditLog-BoyTC4PL.js              1.04 kB │ gzip:   0.65 kB
+dist/assets/NotFound-DYdnZmke.js              0.74 kB │ gzip:   0.50 kB
+dist/assets/Toast-aa4fzl53.js                 0.80 kB │ gzip:   0.53 kB
+dist/assets/resource-BLSBSlBM.js              0.85 kB │ gzip:   0.47 kB
+dist/assets/AuditLog-BHjMJRim.js              1.04 kB │ gzip:   0.64 kB
 dist/assets/rolldown-runtime-6KndmJbk.js      1.08 kB │ gzip:   0.61 kB
-dist/assets/ReviewList-Dscvm5w7.js            1.18 kB │ gzip:   0.79 kB
-dist/assets/InvoiceList-DE5IpUCu.js           1.19 kB │ gzip:   0.79 kB
-dist/assets/Modal-CFc5QOnE.js                 1.30 kB │ gzip:   0.70 kB
-dist/assets/DataTable-Bi5Lmg5C.js             1.44 kB │ gzip:   0.77 kB
-dist/assets/AfterSaleList-BZf_bZv2.js         1.61 kB │ gzip:   0.95 kB
-dist/assets/CategoryList-Dwjdlf_n.js          1.82 kB │ gzip:   1.11 kB
-dist/assets/SpecTemplate-BoQvV8ub.js          2.14 kB │ gzip:   1.13 kB
-dist/assets/auth-D5mqvQSN.js                  2.16 kB │ gzip:   0.82 kB
-dist/assets/CategoryForm-Dae9p1Nx.js          2.19 kB │ gzip:   1.20 kB
-dist/assets/Pagination-ClPMmBmJ.js            2.26 kB │ gzip:   1.16 kB
-dist/assets/SupplierList-C-PnE3Xi.js          2.32 kB │ gzip:   1.13 kB
-dist/assets/UserList-Bu_njCDF.js              2.44 kB │ gzip:   1.34 kB
-dist/assets/CouponList-C_Trn8Nd.js            2.81 kB │ gzip:   1.31 kB
-dist/assets/permission-BOi1Vhpl.js            2.82 kB │ gzip:   0.82 kB
+dist/assets/ReviewList-CvEzGqoa.js            1.18 kB │ gzip:   0.79 kB
+dist/assets/InvoiceList-Bo3dxF7s.js           1.19 kB │ gzip:   0.80 kB
+dist/assets/Modal-hCfYuCGF.js                 1.30 kB │ gzip:   0.70 kB
+dist/assets/DataTable-B8xZW3XE.js             1.44 kB │ gzip:   0.77 kB
+dist/assets/AfterSaleList-Ct_jFeNG.js         1.61 kB │ gzip:   0.95 kB
+dist/assets/CategoryList-DzJWq8Hs.js          1.82 kB │ gzip:   1.11 kB
+dist/assets/SpecTemplate-Bqd5j7rb.js          2.14 kB │ gzip:   1.13 kB
+dist/assets/CategoryForm-DfLXjSkJ.js          2.19 kB │ gzip:   1.20 kB
+dist/assets/Pagination-CSSeOIrA.js            2.26 kB │ gzip:   1.16 kB
+dist/assets/auth-DtgKz1sG.js                  2.29 kB │ gzip:   0.85 kB
+dist/assets/SupplierList-BrPF3BPV.js          2.32 kB │ gzip:   1.13 kB
+dist/assets/CouponList-BmVXdwS3.js            2.81 kB │ gzip:   1.31 kB
+dist/assets/permission-G5i0nJFb.js            2.82 kB │ gzip:   0.82 kB
 dist/assets/export-Gc97GkGj.js                2.90 kB │ gzip:   1.54 kB
-dist/assets/PurchaseOrder-BnIIYOZD.js         3.06 kB │ gzip:   1.37 kB
-dist/assets/OrderList-CIZBYJQe.js             3.12 kB │ gzip:   1.65 kB
-dist/assets/BannerList-DiDJPGQ9.js            3.12 kB │ gzip:   1.38 kB
-dist/assets/Settings-DxMnjV9G.js              3.18 kB │ gzip:   1.42 kB
-dist/assets/UserForm-p7hLcV6c.js              3.64 kB │ gzip:   1.64 kB
-dist/assets/Profile-B3hFLAAQ.js               3.77 kB │ gzip:   1.88 kB
-dist/assets/BackupRestore-Dpv9qkCa.js         3.98 kB │ gzip:   1.80 kB
-dist/assets/ProductForm-DzXhyXyH.js           4.22 kB │ gzip:   1.89 kB
-dist/assets/MemberLevel-DZHQL6Ab.js           4.44 kB │ gzip:   1.84 kB
-dist/assets/Dashboard-DHoiSASP.js             4.49 kB │ gzip:   2.12 kB
-dist/assets/MainLayout-CVVjZQF7.js            4.61 kB │ gzip:   1.93 kB
-dist/assets/AdminLogin-v3lKiu2m.js            4.64 kB │ gzip:   2.19 kB
-dist/assets/RoleList-BP4-2bgc.js              4.66 kB │ gzip:   1.90 kB
-dist/assets/ImageUploader-2k1LeWTd.js         4.66 kB │ gzip:   2.28 kB
-dist/assets/ReportView-DjZ924YV.js            4.86 kB │ gzip:   1.99 kB
-dist/assets/request-BwKDuGuR.js               5.84 kB │ gzip:   2.80 kB
-dist/assets/OrderDetail-CoN7TdEJ.js           6.07 kB │ gzip:   2.33 kB
-dist/assets/InventoryList-BRCuF5-a.js         7.47 kB │ gzip:   2.65 kB
-dist/assets/LogisticsList-BEmdSFVk.js         7.65 kB │ gzip:   3.09 kB
-dist/assets/main-BTIX4f0J.js                 26.19 kB │ gzip:  10.11 kB
+dist/assets/UserList-Ds1gc-s5.js              2.98 kB │ gzip:   1.61 kB
+dist/assets/PurchaseOrder-D2WdXi__.js         3.06 kB │ gzip:   1.38 kB
+dist/assets/OrderList-TUmCeunE.js             3.12 kB │ gzip:   1.65 kB
+dist/assets/BannerList-BP1DdwhU.js            3.12 kB │ gzip:   1.38 kB
+dist/assets/Settings-CKNQEeoz.js              3.18 kB │ gzip:   1.42 kB
+dist/assets/UserForm-Ps_eGOtR.js              3.64 kB │ gzip:   1.64 kB
+dist/assets/Profile-Dq7N66LD.js               3.77 kB │ gzip:   1.88 kB
+dist/assets/BackupRestore-D9SeUK5u.js         3.98 kB │ gzip:   1.80 kB
+dist/assets/ProductForm-BqmDZsqC.js           4.22 kB │ gzip:   1.89 kB
+dist/assets/MemberLevel-D0kOefQz.js           4.44 kB │ gzip:   1.83 kB
+dist/assets/MainLayout-De3r1RqM.js            4.61 kB │ gzip:   1.93 kB
+dist/assets/RoleList-BS29f3KB.js              4.66 kB │ gzip:   1.90 kB
+dist/assets/ImageUploader-She-xMna.js         4.66 kB │ gzip:   2.28 kB
+dist/assets/AdminLogin-GNLGJgvE.js            4.69 kB │ gzip:   2.22 kB
+dist/assets/ReportView-D-YZVV7L.js            4.86 kB │ gzip:   1.99 kB
+dist/assets/request-yXS7Vmmr.js               5.89 kB │ gzip:   2.81 kB
+dist/assets/OrderDetail-Dd2SBXwI.js           6.07 kB │ gzip:   2.33 kB
+dist/assets/Dashboard-Bkhpv8_6.js             6.92 kB │ gzip:   3.03 kB
+dist/assets/InventoryList-DOq-RK_Y.js         7.47 kB │ gzip:   2.64 kB
+dist/assets/LogisticsList-CvCjhDo2.js         7.65 kB │ gzip:   3.09 kB
+dist/assets/main-ClsKBIHC.js                 26.18 kB │ gzip:  10.11 kB
 dist/assets/vendor-utils-D8OkvpEl.js        103.18 kB │ gzip:  30.74 kB
 dist/assets/vendor-vue-B7m0bk7b.js          212.23 kB │ gzip:  79.52 kB
-dist/assets/ProductList-8krFKRfH.js         341.05 kB │ gzip: 118.01 kB
+dist/assets/ProductList-CxjL4aBo.js         341.05 kB │ gzip: 118.01 kB
 dist/assets/vendor-excel-DjgNINCK.js        945.27 kB │ gzip: 272.35 kB
 dist/assets/vendor-charts-QC9RV6FB.js     1,124.32 kB │ gzip: 380.22 kB
 
-[32m✓ built in 805ms[39m
+[32m✓ built in 688ms[39m
 [33m[plugin builtin:vite-reporter] 
 (!) Some chunks are larger than 500 kB after minification. Consider:
 - Using dynamic import() to code-split the application
@@ -84,10 +81,10 @@ dist/assets/vendor-charts-QC9RV6FB.js     1,124.32 kB │ gzip: 380.22 kB
 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
 
 ✨ [vite-plugin-compression]:algorithm=gzip - compressed file successfully: 
-dist/c:/Users/wyyd/ve-admin/assets/main-BTIX4f0J.js.gz            25.58kb / gzip: 9.86kb
+dist/c:/Users/wyyd/ve-admin/assets/main-ClsKBIHC.js.gz            25.57kb / gzip: 9.86kb
 dist/c:/Users/wyyd/ve-admin/assets/vendor-utils-D8OkvpEl.js.gz    100.77kb / gzip: 29.75kb
 dist/c:/Users/wyyd/ve-admin/assets/vendor-vue-B7m0bk7b.js.gz      207.26kb / gzip: 76.81kb
-dist/c:/Users/wyyd/ve-admin/assets/ProductList-8krFKRfH.js.gz     333.06kb / gzip: 114.14kb
+dist/c:/Users/wyyd/ve-admin/assets/ProductList-CxjL4aBo.js.gz     333.06kb / gzip: 114.14kb
 dist/c:/Users/wyyd/ve-admin/assets/vendor-excel-DjgNINCK.js.gz    923.12kb / gzip: 263.61kb
 dist/c:/Users/wyyd/ve-admin/assets/vendor-charts-QC9RV6FB.js.gz   1097.97kb / gzip: 367.40kb
 
