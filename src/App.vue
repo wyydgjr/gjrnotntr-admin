@@ -33,11 +33,13 @@ const loading = ref(false)
 const offline = ref(false)
 let timer = null
 
-$router.beforeEach((to, from) => {
-  if (to.path !== from.path) {
+$router.beforeEach((_to, from) => {
+  // 显式返回 true 放行导航（Vue Router 4 推荐）
+  if (_to.path !== from.path) {
     clearTimeout(timer)
     loading.value = true
   }
+  return true
 })
 
 $router.afterEach(() => {

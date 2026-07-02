@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { hasValidToken } from '../api/request'
 import { useSeo } from '../utils/seo'
 
 const routes = [
@@ -59,24 +60,27 @@ const router = createRouter({
   scrollBehavior() { return { top: 0 } },
 })
 
-router.beforeEach((to, _from, next) => {
+// 使用 return 风格（Vue Router 4 推荐）
+router.beforeEach((to, _from) => {
   const auth = useAuthStore()
-  // 每次导航都从 storage 恢复状态，确保 Pinia 和 request.js 的 token 同步
-  auth.initFromStorage()
 
   const { setMeta } = useSeo()
   const title = to.meta.title ? `${to.meta.title} - VeStore Admin` : 'VeStore Admin'
   setMeta({ title, description: '' })
 
-  if (to.meta.guest) {
-    if (auth.isAdmin) return next('/admin/dashboard')
-    return next()
+  // 直接计算是否为已登录管理员，避免依赖 Pinia getter 的缓存机制
+  // （Pinia getter 中 hasValidToken() 不是响应式依赖，可能导致缓存不更新）
+  const isAdmin = hasValidToken() && auth.activeRole === 'admin'
+
+  // guest 路由（登录页）：已登录则重定向到仪表盘
+  if (to.meta.guest && isAdmin) {
+    return '/admin/dashboard'
   }
-  if (to.meta.requiresAdmin) {
-    if (auth.isAdmin) return next()
-    return next('/admin/login')
+  // 需要管理员权限的路由：未登录则跳转登录页
+  if (to.meta.requiresAdmin && !isAdmin) {
+    return '/admin/login'
   }
-  next()
+  return true
 })
 
 export default router
