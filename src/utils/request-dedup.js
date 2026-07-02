@@ -21,10 +21,8 @@ function getRequestKey(config) {
  */
 export function addPending(config) {
   const key = getRequestKey(config)
-  if (pendingRequests.has(key)) {
-    const controller = pendingRequests.get(key)
-    controller.abort()
-  }
+  // 不取消已有请求，只防止重复添加
+  if (pendingRequests.has(key)) return
   const controller = new AbortController()
   config.signal = controller.signal
   pendingRequests.set(key, controller)

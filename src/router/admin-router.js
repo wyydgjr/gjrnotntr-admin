@@ -61,7 +61,8 @@ const router = createRouter({
 
 router.beforeEach((to, _from, next) => {
   const auth = useAuthStore()
-  if (auth.activeRole === null) auth.initFromStorage()
+  // 每次导航都从 storage 恢复状态，确保 Pinia 和 request.js 的 token 同步
+  auth.initFromStorage()
 
   const { setMeta } = useSeo()
   const title = to.meta.title ? `${to.meta.title} - VeStore Admin` : 'VeStore Admin'

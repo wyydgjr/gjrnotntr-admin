@@ -85,7 +85,9 @@ async function onSubmit() {
   loading.value = true
   try {
     await auth.adminLogin({ username: form.username, password: form.password })
-    router.push('/admin')
+    // 确保 Pinia 状态同步后再跳转，避免导航守卫读到旧状态
+    await new Promise((r) => setTimeout(r, 50))
+    await router.push('/admin')
   } catch (e) {
     error.value = e.response?.data?.message || e.message || '登录失败，请重试'
   } finally {
