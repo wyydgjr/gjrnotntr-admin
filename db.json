@@ -1,0 +1,231 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "gjr",
+      "email": "admin@ve.com",
+      "password": "84177b18f31c344b27bd2cd1e25021bb",
+      "role": "admin",
+      "status": "active",
+      "createdAt": "2025-03-15 10:30:00"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "时尚双肩包",
+      "category": "箱包配饰",
+      "price": 299,
+      "stock": 50,
+      "status": "active",
+      "image": "/images/背包.webp",
+      "description": "大容量防水面料，轻便舒适，多隔层设计，适合通勤出行和短途旅行。",
+      "specs": { "颜色": ["黑色","灰色","蓝色"], "尺寸": ["38L","45L"] },
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 2,
+      "name": "便携小风扇",
+      "category": "家用电器",
+      "price": 89,
+      "stock": 100,
+      "status": "active",
+      "image": "/images/风扇.webp",
+      "description": "USB充电迷你风扇，三档风速可调，低噪静音运行，轻巧便携随身带。",
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 3,
+      "name": "美妆护肤品",
+      "category": "美妆个护",
+      "price": 199,
+      "stock": 80,
+      "status": "active",
+      "image": "/images/化妆品.webp",
+      "description": "天然植物成分温和护肤，深层滋养焕亮肌肤，适合各种肤质日常使用。",
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 4,
+      "name": "新鲜芒果",
+      "category": "生鲜食品",
+      "price": 39,
+      "stock": 200,
+      "status": "active",
+      "image": "/images/芒果.webp",
+      "description": "产地直供精选芒果，果肉饱满香甜多汁，现摘现发保证新鲜口感。",
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 5,
+      "name": "香氛沐浴露",
+      "category": "美妆个护",
+      "price": 59,
+      "stock": 120,
+      "status": "active",
+      "image": "/images/沐浴露.webp",
+      "description": "持久迷人香氛，泡沫绵密丰富，温和清洁不紧绷，洗后肌肤水润丝滑。",
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 6,
+      "name": "进口葡萄酒",
+      "category": "食品酒水",
+      "price": 299,
+      "stock": 60,
+      "status": "active",
+      "image": "/images/葡萄酒.webp",
+      "description": "精选进口葡萄酿造，口感醇厚饱满，单宁柔顺，余味悠长，佐餐佳品。",
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 7,
+      "name": "智能热水壶",
+      "category": "家用电器",
+      "price": 159,
+      "stock": 45,
+      "status": "active",
+      "image": "/images/热水壶.webp",
+      "description": "精准智能温控，食品级304不锈钢，防干烧自动断电，1.7L大容量。",
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 8,
+      "name": "三只松鼠坚果礼盒",
+      "category": "休闲零食",
+      "price": 128,
+      "stock": 90,
+      "status": "active",
+      "image": "/images/三只松鼠坚果礼盒.webp",
+      "description": "精选夏威夷果、腰果、巴旦木等多种坚果组合，年货送礼精美礼盒装。",
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 9,
+      "name": "时尚腕表",
+      "category": "箱包配饰",
+      "price": 599,
+      "stock": 30,
+      "status": "active",
+      "image": "/images/手表.webp",
+      "description": "简约精致表盘设计，精钢表带柔韧舒适，30米生活防水，商务休闲百搭。",
+      "specs": { "颜色": ["银色","黑色","玫瑰金"], "表盘": ["40mm","44mm"] },
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 10,
+      "name": "潮流手提包",
+      "category": "箱包配饰",
+      "price": 399,
+      "stock": 40,
+      "status": "active",
+      "image": "/images/手提包.webp",
+      "description": "头层牛皮材质质感十足，大容量多层分区，优雅出行时尚百搭单品。",
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 11,
+      "name": "保温水杯",
+      "category": "生活用品",
+      "price": 79,
+      "stock": 150,
+      "status": "active",
+      "image": "/images/水杯.webp",
+      "description": "316不锈钢内胆安全健康，真空双层12小时长效保温，500ml便携容量。",
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 12,
+      "name": "高效洗衣液",
+      "category": "生活用品",
+      "price": 29,
+      "stock": 300,
+      "status": "active",
+      "image": "/images/洗衣粉.webp",
+      "description": "深层去渍配方强力分解污渍，护色增艳衣物如新，持久清新留香。",
+      "createdAt": "2025-06-10"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "箱包配饰",
+      "description": "箱包、手表及配饰",
+      "productCount": 3,
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 2,
+      "name": "家用电器",
+      "description": "生活电器及数码",
+      "productCount": 2,
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 3,
+      "name": "美妆个护",
+      "description": "护肤美妆及个护用品",
+      "productCount": 2,
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 4,
+      "name": "生鲜食品",
+      "description": "新鲜水果生鲜",
+      "productCount": 1,
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 5,
+      "name": "食品酒水",
+      "description": "酒水饮料及冲调",
+      "productCount": 1,
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 6,
+      "name": "休闲零食",
+      "description": "零食坚果及糕点",
+      "productCount": 1,
+      "createdAt": "2025-06-10"
+    },
+    {
+      "id": 7,
+      "name": "生活用品",
+      "description": "日用百货及家居",
+      "productCount": 2,
+      "createdAt": "2025-06-10"
+    }
+  ],
+  "orders": [],
+  "carts": [],
+  "addresses": [],
+  "wishlist": [],
+  "reviews": [],
+  "banners": [
+    { "id": 1, "title": "品质生活从这里开始", "subtitle": "精选好物，用心推荐", "image": "", "link": "/products", "sort": 1 },
+    { "id": 2, "title": "新品上市 限时特惠", "subtitle": "全场满99包邮", "image": "", "link": "/products", "sort": 2 }
+  ],
+  "coupons": [],
+  "user_coupons": [],
+  "after_sales": [],
+  "invoices": [],
+  "chat_messages": [],
+  "audit_logs": [],
+  "purchase_orders": [],
+  "suppliers": [],
+  "staff": [],
+  "spec_templates": [],
+  "stock_logs": [],
+  "roles": [
+    { "id": 1, "label": "超级管理员", "value": "super_admin", "permissions": { "dashboard": ["view"], "users": ["view","create","edit","delete"], "products": ["view","create","edit","delete"], "categories": ["view","create","edit","delete"], "orders": ["view","edit","delete","export"], "coupons": ["view","create","edit","delete"], "banners": ["view","create","edit","delete"], "reviews": ["view","delete"], "afterSales": ["view","edit"], "invoices": ["view","edit"], "suppliers": ["view","create","edit","delete"], "purchaseOrders": ["view","create","edit","delete"], "specTemplates": ["view","create","edit","delete"], "auditLogs": ["view"], "settings": ["view","edit"], "reports": ["view","export"], "inventory": ["view","edit"], "roles": ["view","create","edit","delete"] }, "createdAt": "2026-01-01" },
+    { "id": 2, "label": "管理员", "value": "admin", "permissions": { "dashboard": ["view"], "users": ["view","create","edit"], "products": ["view","create","edit","delete"], "categories": ["view","create","edit","delete"], "orders": ["view","edit","delete","export"], "coupons": ["view","create","edit","delete"], "banners": ["view","create","edit","delete"], "reviews": ["view","delete"], "afterSales": ["view","edit"], "invoices": ["view","edit"], "suppliers": ["view","create","edit"], "purchaseOrders": ["view","create","edit"], "specTemplates": ["view","create","edit"], "auditLogs": ["view"], "settings": ["view"], "reports": ["view","export"], "inventory": ["view","edit"], "roles": [] }, "createdAt": "2026-01-01" }
+  ],
+  "member_levels": [
+    { "id": 1, "name": "钻石会员", "minSpend": 10000, "discount": 7, "pointRate": 3, "color": "#6c5ce7", "benefits": "专属客服、生日礼包" },
+    { "id": 2, "name": "金卡会员", "minSpend": 5000, "discount": 8, "pointRate": 2, "color": "#f39c12", "benefits": "优先发货、免运费" },
+    { "id": 3, "name": "银卡会员", "minSpend": 2000, "discount": 9, "pointRate": 1.5, "color": "#95a5a6", "benefits": "积分翻倍" },
+    { "id": 4, "name": "铜卡会员", "minSpend": 500, "discount": 9.5, "pointRate": 1, "color": "#e67e22", "benefits": "" },
+    { "id": 5, "name": "普通会员", "minSpend": 0, "discount": 10, "pointRate": 1, "color": "#999", "benefits": "" }
+  ]
+}
