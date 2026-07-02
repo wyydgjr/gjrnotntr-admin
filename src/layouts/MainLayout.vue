@@ -93,6 +93,7 @@ if (isDark.value) {
 
 const navItems = [
   { path: '/admin/dashboard', label: '📊', i18n: 'nav.dashboard' },
+  { path: '/admin/users', label: '👥', i18n: 'nav.userManagement' },
   { path: '/admin/orders', label: '📋', i18n: 'nav.orderManagement' },
   { path: '/admin/products', label: '📦', i18n: 'nav.productManagement' },
   { path: '/admin/inventory', label: '📉', i18n: 'nav.inventory' },
@@ -108,7 +109,6 @@ const navItems = [
   { path: '/admin/suppliers', label: '🏭', i18n: 'nav.supplier' },
   { path: '/admin/purchase-orders', label: '📥', i18n: 'nav.purchaseOrder' },
   { path: '/admin/spec-templates', label: '🏷️', i18n: 'nav.specTemplate' },
-  { path: '/admin/users', label: '👥', i18n: 'nav.userManagement' },
   { path: '/admin/roles', label: '🔐', i18n: 'nav.roles' },
   { path: '/admin/audit-logs', label: '📝', i18n: 'nav.auditLog' },
   { path: '/admin/backup', label: '💾', i18n: 'nav.backup' },

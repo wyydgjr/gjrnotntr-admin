@@ -2,7 +2,11 @@
   <div>
     <div class="page-header">
       <h2>用户管理</h2>
-      <div style="display: flex; gap: 10px">
+      <div style="display: flex; gap: 10px; align-items: center">
+        <span v-if="autoRefresh" class="refresh-badge">🔄 自动刷新中</span>
+        <button class="btn btn-sm" @click="toggleAutoRefresh">
+          {{ autoRefresh ? '暂停刷新' : '开启自动刷新' }}
+        </button>
         <button class="btn" @click="doExport">📥 导出Excel</button>
         <router-link to="/admin/users/new" class="btn btn-primary">新增用户</router-link>
       </div>
@@ -35,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useResourceStore } from '../stores/resource'
 import { useToastStore } from '../stores/toast'
 import DataTable from '../components/DataTable.vue'
@@ -47,6 +51,34 @@ const store = useResourceStore('users', '/users')
 const toast = useToastStore()
 const page = ref(1)
 const pageSize = 20
+
+// ── 自动刷新 ──
+const autoRefresh = ref(true)
+let refreshTimer = null
+const REFRESH_INTERVAL = 30000
+
+function toggleAutoRefresh() {
+  autoRefresh.value = !autoRefresh.value
+  if (autoRefresh.value) {
+    startAutoRefresh()
+  } else {
+    stopAutoRefresh()
+  }
+}
+
+function startAutoRefresh() {
+  stopAutoRefresh()
+  refreshTimer = setInterval(() => {
+    store.fetchList({ page: page.value, pageSize, keyword: store.query.keyword || '' })
+  }, REFRESH_INTERVAL)
+}
+
+function stopAutoRefresh() {
+  if (refreshTimer) {
+    clearInterval(refreshTimer)
+    refreshTimer = null
+  }
+}
 
 const columns = [
   { key: 'id', label: 'ID' },
@@ -69,7 +101,14 @@ const columns = [
   { key: 'createdAt', label: '创建时间' },
 ]
 
-onMounted(() => store.fetchList())
+onMounted(() => {
+  store.fetchList()
+  startAutoRefresh()
+})
+
+onUnmounted(() => {
+  stopAutoRefresh()
+})
 
 watch(page, () => loadData())
 
@@ -105,3 +144,14 @@ function doExport() {
   )
 }
 </script>
+
+<style scoped>
+.refresh-badge {
+  font-size: 12px;
+  color: var(--success);
+  background: rgba(34, 197, 94, 0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+</style>

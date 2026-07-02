@@ -2,7 +2,13 @@
   <div>
     <div class="page-header">
       <h2>{{ $t('nav.dashboard') }}</h2>
-      <button class="btn" @click="doWordReport">📄 导出Word报告</button>
+      <div style="display: flex; gap: 10px; align-items: center">
+        <span v-if="autoRefresh" class="refresh-badge">🔄 自动刷新中</span>
+        <button class="btn btn-sm" @click="toggleAutoRefresh">
+          {{ autoRefresh ? '暂停' : '开启自动刷新' }}
+        </button>
+        <button class="btn" @click="doWordReport">📄 导出Word报告</button>
+      </div>
     </div>
 
     <div class="stats-grid">
@@ -21,13 +27,59 @@
       </div>
     </div>
 
+    <!-- 用户实时概览卡片 -->
     <div class="dashboard-charts">
+      <div class="card">
+        <div class="chart-header">
+          <h3 class="chart-title">👥 用户实时概览</h3>
+          <span class="refresh-time">最近更新: {{ lastUpdateTime }}</span>
+        </div>
+        <div v-if="recentUsers.length" class="user-table-wrap">
+          <table class="mini-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>用户名</th>
+                <th>邮箱</th>
+                <th>角色</th>
+                <th>状态</th>
+                <th>注册时间</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="u in recentUsers" :key="u.id" @click="$router.push(`/admin/users/${u.id}/edit`)" class="clickable-row">
+                <td>{{ u.id }}</td>
+                <td><strong>{{ u.username }}</strong></td>
+                <td>{{ u.email || '-' }}</td>
+                <td>
+                  <span :class="u.role === 'admin' ? 'badge badge-admin' : 'badge badge-user'">
+                    {{ u.role === 'admin' ? '管理员' : '用户' }}
+                  </span>
+                </td>
+                <td>
+                  <span :class="u.status === 'active' ? 'badge badge-active' : 'badge badge-inactive'">
+                    {{ u.status === 'active' ? '启用' : '停用' }}
+                  </span>
+                </td>
+                <td class="time-cell">{{ u.createdAt }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="view-all">
+            <router-link to="/admin/users">查看全部用户 →</router-link>
+          </div>
+        </div>
+        <div v-else class="empty-chart">暂无用户数据</div>
+      </div>
+
       <div class="card">
         <h3 class="chart-title">月度营收趋势</h3>
         <v-chart v-if="chartOption" :option="chartOption" class="echart-box" autoresize />
         <div v-else class="empty-chart">暂无营收数据</div>
       </div>
+    </div>
 
+    <div class="dashboard-charts">
       <div class="card">
         <h3 class="chart-title">最近活动</h3>
         <div v-if="activities.length" class="activity-list">
@@ -62,7 +114,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import VChart from 'vue-echarts'
 import { use } from 'echarts/core'
@@ -70,6 +122,7 @@ import { BarChart } from 'echarts/charts'
 import { GridComponent, TooltipComponent, LegendComponent } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import { getDashboardStats, getDashboardActivities, getDashboardRevenue } from '../api/dashboard'
+import request from '../api/request'
 import { exportWord } from '../utils/export'
 
 use([BarChart, GridComponent, TooltipComponent, LegendComponent, CanvasRenderer])
@@ -87,6 +140,66 @@ const stats = ref([
 
 const activities = ref([])
 const revenue = ref({ months: [], values: [] })
+
+// ── 用户实时概览 ──
+const recentUsers = ref([])
+const lastUpdateTime = ref('--')
+const autoRefresh = ref(true)
+let refreshTimer = null
+const REFRESH_INTERVAL = 30000 // 30秒
+
+function formatTime() {
+  const now = new Date()
+  return now.toLocaleTimeString('zh-CN', { hour12: false })
+}
+
+async function fetchUsers() {
+  try {
+    const res = await request.get('/users', { params: { pageSize: 10, page: 1 } })
+    if (res && res.list) {
+      recentUsers.value = res.list
+      lastUpdateTime.value = formatTime()
+    }
+  } catch { /* ignore */ }
+}
+
+async function refreshDashboardData() {
+  try {
+    const [s] = await Promise.all([
+      getDashboardStats(),
+      fetchUsers(),
+    ])
+    if (s) {
+      stats.value[0].value = s.userCount || 0
+      stats.value[1].value = s.productCount || 0
+      stats.value[2].value = s.orderCount || 0
+      stats.value[3].value = s.activeUsers || 0
+      stats.value[4].value = s.pendingOrders || 0
+      stats.value[5].value = s.lowStock || 0
+    }
+  } catch { /* ignore */ }
+}
+
+function toggleAutoRefresh() {
+  autoRefresh.value = !autoRefresh.value
+  if (autoRefresh.value) {
+    startAutoRefresh()
+  } else {
+    stopAutoRefresh()
+  }
+}
+
+function startAutoRefresh() {
+  stopAutoRefresh()
+  refreshTimer = setInterval(refreshDashboardData, REFRESH_INTERVAL)
+}
+
+function stopAutoRefresh() {
+  if (refreshTimer) {
+    clearInterval(refreshTimer)
+    refreshTimer = null
+  }
+}
 
 const chartOption = computed(() => {
   const { months, values } = revenue.value
@@ -186,6 +299,7 @@ onMounted(async () => {
       getDashboardStats(),
       getDashboardActivities(),
       getDashboardRevenue(),
+      fetchUsers(),
     ])
     if (s) {
       stats.value[0].value = s.userCount || 0
@@ -198,6 +312,11 @@ onMounted(async () => {
     if (Array.isArray(act)) activities.value = act
     if (rev) revenue.value = rev
   } catch {}
+  startAutoRefresh()
+})
+
+onUnmounted(() => {
+  stopAutoRefresh()
 })
 </script>
 
@@ -254,6 +373,79 @@ onMounted(async () => {
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 16px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.chart-header .chart-title {
+  margin-bottom: 0;
+}
+
+.refresh-badge {
+  font-size: 12px;
+  color: var(--success);
+  background: rgba(34, 197, 94, 0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+.refresh-time {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.user-table-wrap {
+  overflow-x: auto;
+}
+
+.mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.mini-table th,
+.mini-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.mini-table th {
+  background: var(--bg-secondary);
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.mini-table .clickable-row {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.mini-table .clickable-row:hover {
+  background: var(--bg-hover);
+}
+.time-cell {
+  color: var(--text-secondary);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.view-all {
+  text-align: right;
+  padding: 12px 0 0;
+}
+.view-all a {
+  font-size: 13px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+.view-all a:hover {
+  text-decoration: underline;
 }
 
 .dashboard-charts {
